@@ -21,7 +21,7 @@ match_won_flag = False
 match_lost_flag = False
 opponent_score = 0
 player_score = 0
-game_won = 0
+match_won = 0
 ##############################################
 #                  Classes
 ##############################################
@@ -53,7 +53,7 @@ class GamePlayHandler:
         global player_score
         global match_won_flag
         global match_lost_flag
-        global game_won
+        global match_won
 
         result = self.player_hand - self.opponent_hand
         if start_flag:
@@ -68,19 +68,24 @@ class GamePlayHandler:
                 # Do nothing
         if player_score == 3:
             match_won_flag = True
-            game_won += 1
+            match_won += 1
             GamePlayHandler.reset()
         if opponent_score == 3:
             match_lost_flag = True
             GamePlayHandler.reset()
+            GamePlayHandler.reset_match()
+
     @staticmethod
     def reset():
         global opponent_score
         global player_score
-        global game_won
         opponent_score = 0
         player_score = 0
-        game_won = 0
+
+    @staticmethod
+    def reset_match():
+        global match_won
+        match_won = 0
 
 ##############################################
 #                  Functions
@@ -134,9 +139,9 @@ def display_winner():
         match_lost_flag = False
 
 
-def check_game_won():
-    global game_won
-    messagebox.showinfo(title='Number of Games Won', message='You Have Won ' + str(game_won) + ' Games.')
+def check_match_won():
+    global match_won
+    messagebox.showinfo(title='Number of Games Won', message='You Have Won ' + str(match_won) + ' Games.')
 
 
 def main():

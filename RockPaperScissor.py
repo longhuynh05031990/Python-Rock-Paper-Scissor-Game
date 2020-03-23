@@ -62,7 +62,7 @@ fileMenu.add_command(label="Exit", command=sys.exit)
 
 # Option submenu
 optionMenu = Tk.Menu(menu_bar)
-optionMenu.add_command(label="Check Number of Games You Won", command=Gp.check_game_won)
+optionMenu.add_command(label="Check Number of Matches You Have Won", command=lambda: check_match_won_wrapper())
 
 # Leaderboard submenu
 lbMenu = Tk.Menu(menu_bar)
@@ -124,8 +124,8 @@ player_hand_canvas.grid(row=1, column=1)
 #                 Functions
 ##############################################
 # on_play_wrapper
-# Description: Function to display the image of player's choice
-# Parameters: choice - input from player by pressing the buttons
+# Description: Wrapper of on_play - The function to display the image of player's choice
+# Parameter(s): choice - input from player by pressing the buttons
 # Return: void
 # Note: To be used as command for each button on the UI
 
@@ -147,7 +147,13 @@ def on_play_wrapper(choice):
     player_score_text.config(text=str(Gp.player_score))
     Gp.display_winner()
 
-# toolbar = Tk.Frame(main_window)
+
+# check_match_won_wrapper
+# Description: Wrapper of check_match_won - The function to display the number of matches won by the player
+# Parameter(s): void
+# Return: void
+def check_match_won_wrapper():
+    Gp.check_match_won()
 
 # All buttons to play Rock Paper Scissor
 
