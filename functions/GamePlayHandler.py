@@ -3,11 +3,14 @@
 #############################################
 import random
 import sys
+import os
+import tkinter.simpledialog
 from tkinter import messagebox
 
 #############################################
 #                   Macros
 #############################################
+SAVE_DIR = '.\\saves\\'
 
 ##############################################
 #             Global Variables
@@ -22,6 +25,7 @@ match_lost_flag = False
 opponent_score = 0
 player_score = 0
 match_won = 0
+player_name = ''
 ##############################################
 #                  Classes
 ##############################################
@@ -30,7 +34,7 @@ match_won = 0
 class GamePlayHandler:
     # Class Variables
 
-    # Class Constructor
+    # Class Default Constructor
     def __init__(self):
         self.opponent_hand = 0
         self.player_hand = 0
@@ -98,6 +102,13 @@ def on_new():
     # session.reset()
 
 
+def on_player_name():
+    global player_name
+    if player_name == '':
+        player_name = tkinter.simpledialog.askstring('Name', 'What is your name?')
+    return player_name
+
+
 def on_opponent_choice():
     global session
     return session.get_opponent_hand()
@@ -141,7 +152,46 @@ def display_winner():
 
 def check_match_won():
     global match_won
-    messagebox.showinfo(title='Number of Games Won', message='You Have Won ' + str(match_won) + ' Games.')
+    messagebox.showinfo(title='Number of Games Won', message=f'You Have Won {match_won} Games.')
+
+
+def save_game():
+    global opponent_score
+    global player_score
+    global match_won
+    global player_name
+    print('Saving...')
+    if not os.path.exists(SAVE_DIR):
+        os.mkdir(SAVE_DIR)
+    save = open(SAVE_DIR + 'save_game.save', 'w')
+    save.write(f'pn:{player_name}\nos:{opponent_score}\nps:{player_score}\nmw:{match_won}')
+    save.close()
+    messagebox.showinfo(title='Game Saved', message='Saved!')
+
+
+def load_game():
+    global opponent_score
+    global player_score
+    global match_won
+    global player_name
+    print('Loading...')
+    line = 'a'
+    if not os.path.exists(SAVE_DIR):
+        messagebox.showinfo(title='Error', message='No Save Found!')
+    load = open(SAVE_DIR + 'save_game.save', 'r')
+    while line != '':
+        line = load.readline()
+        print('Reading line: ' + str(line))
+        if 'pn:' in line:
+            player_name = str(line[line.index(':')+1:])
+        elif 'os:' in line:
+            opponent_score = int(line[line.index(':')+1:])
+        elif 'ps:' in line:
+            player_score = int(line[line.index(':')+1:])
+        elif 'mw:' in line:
+            match_won = int(line[line.index(':')+1:])
+        else:
+            break
 
 
 def main():
@@ -149,4 +199,4 @@ def main():
 
 
 if __name__ == "__main__":
-   main()
+    main()

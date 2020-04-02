@@ -2,7 +2,6 @@
 #                   Import
 #############################################
 import tkinter as Tk
-import tkinter.simpledialog
 import os
 import sys
 import random
@@ -34,7 +33,9 @@ print('Printing...' + ROCK_ICON + ' ' + PAPER_ICON + ' ' + SCISSOR_ICON + ' ' + 
 ##############################################
 opponent_name_list = ['Liam', 'Noah', 'William', 'James', 'Oliver',
                       'Emma', 'Olivia', 'Ava', 'Isabella', 'Sophia']
+
 global_player_name = ''
+
 ##############################################
 #                     UI
 ##############################################
@@ -46,7 +47,7 @@ main_window.iconbitmap(default=ICON)
 
 # Display a prompt for the player to input their name
 while global_player_name == '':
-    global_player_name = Tk.simpledialog.askstring('Name', 'What is your name?')
+    global_player_name = Gp.on_player_name()
 
 main_window.lift()
 # Display a toolbar with File and Leaderboard submenus
@@ -55,9 +56,9 @@ main_window.config(menu=menu_bar)
 
 # File submenu
 fileMenu = Tk.Menu(menu_bar)
-fileMenu.add_command(label="New")
-fileMenu.add_command(label="Save")
-fileMenu.add_command(label="Load")
+fileMenu.add_command(label="New", command=lambda: on_new_wrapper())
+fileMenu.add_command(label="Save", command=lambda: save_game_wrapper())
+fileMenu.add_command(label="Load", command=lambda: load_game_wrapper())
 fileMenu.add_command(label="Exit", command=sys.exit)
 
 # Option submenu
@@ -154,6 +155,30 @@ def on_play_wrapper(choice):
 # Return: void
 def check_match_won_wrapper():
     Gp.check_match_won()
+
+
+# save_game_wrapper
+# Description: Wrapper of save_game - The function to save the current game
+# Parameter(s): void
+# Return: void
+def save_game_wrapper():
+    Gp.save_game()
+
+
+# load_game_wrapper
+# Description: Wrapper of load_game - The function to load a save
+# Parameter(s): void
+# Return: void
+def load_game_wrapper():
+    Gp.load_game()
+
+
+# on_new_wrapper
+# Description: Wrapper of on_new - The function to start a new game
+# Parameter(s): void
+# Return: void
+def on_new_wrapper():
+    Gp.on_new()
 
 # All buttons to play Rock Paper Scissor
 
