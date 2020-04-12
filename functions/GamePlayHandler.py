@@ -4,14 +4,16 @@
 import random
 import sys
 import os
+import sqlite3
 import tkinter.simpledialog
 from tkinter import messagebox
+from sqlite3 import Error
 
 #############################################
 #                   Macros
 #############################################
 SAVE_DIR = '.\\saves\\'
-
+DB_DIR = '.\\db\\'
 ##############################################
 #             Global Variables
 ##############################################
@@ -26,6 +28,25 @@ opponent_score = 0
 player_score = 0
 match_won = 0
 player_name = ''
+
+##############################################
+#                 Database
+##############################################
+def sql_connection():
+
+    try:
+        if not os.path.exists(DB_DIR):
+            os.mkdir(DB_DIR)
+        con = sqlite3.connect(DB_DIR + 'game_data.db')
+        print(f"Connection is established: Database is created in {DB_DIR}")
+        return con
+
+    except Error:
+        print(Error)
+
+
+connection = sql_connection()
+
 ##############################################
 #                  Classes
 ##############################################
